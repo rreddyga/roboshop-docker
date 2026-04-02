@@ -18,11 +18,12 @@ services:
       dockerfile: frontend.Dockerfile
     image: rreddygang/frontend:1.0.0
     container_name: frontend
+    ports:
+      - "80:80"
     depends_on:
       - catalogue
       - user
-    ports:
-      - "80:80"
+      
   mongodb:
     build:
       dockerfile: mongodb.Dockerfile
