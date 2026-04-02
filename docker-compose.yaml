@@ -46,6 +46,15 @@ services:
     build: ./mysql
     image: rreddygang/mysql:1.0.0
     container_name: mysql
+  rabbitmq:
+    image: rabbitmq:3
+    environment:
+      - RABBITMQ_DEFAULT_USER= roboshop
+      - RABBITMQ_DEFAULT_PASS= roboshop123
+    container_name: rabbitmq
+    ports:
+      - "15672:15672"
+      - "5672:5672"
 
 networks:
   default:
