@@ -11,4 +11,10 @@ WORKDIR /app
 COPY --from=builder /app /app
 ENV MONGO="true" \
     MONGO_URL="mongodb://mongodb:27017/catalogue"
+#don't run root user, create a new user and run the application with that user.
+RUN addgroup -S roboshop && adduser -S roboshop -G roboshop
+# change the ownership of the application to the new user.
+RUN chown -R roboshop:roboshop /app
+# run the application with the new user.
+USER roboshop 
 CMD [ "node", "server.js" ]
