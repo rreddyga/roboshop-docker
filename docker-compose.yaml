@@ -114,3 +114,8 @@ volumes:
     driver: local
     name: rabbitmq
     external: false
+    
+  redis:
+    driver: local
+    name: redis
+    external: false
