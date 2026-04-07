@@ -53,7 +53,7 @@ services:
     image: rreddygang/frontend:1.1.0
     container_name: frontend
     ports:
-      - "80:80"
+      - "8080:80"
     depends_on:
       - catalogue
       - user
