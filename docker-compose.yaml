@@ -1,14 +1,14 @@
 services:
   catalogue:
     build: ./catalogue
-    image: rreddygang/catalogue:1.0.0
+    image: rreddygang/catalogue:1.1.0
     container_name: catalogue
     depends_on:
       - mongodb
 
   user:
     build: ./user
-    image: rreddygang/user:1.0.0
+    image: rreddygang/user:1.1.0
     container_name: user
     depends_on:
       - redis
@@ -16,7 +16,7 @@ services:
 
   cart:
     build: ./cart
-    image: rreddygang/cart:1.0.0
+    image: rreddygang/cart:1.1.0
     container_name: cart
     depends_on:
       - redis
@@ -24,7 +24,7 @@ services:
 
   shipping:
     build: ./shipping
-    image: rreddygang/shipping:1.0.0
+    image: rreddygang/shipping:1.1.0
     container_name: shipping
     depends_on:
       - mysql
@@ -32,7 +32,7 @@ services:
 
   payment:
     build: ./payment
-    image: rreddygang/payment:1.0.0
+    image: rreddygang/payment:1.1.0
     container_name: payment
     environment:
       CART_HOST: "cart"
@@ -50,7 +50,7 @@ services:
 
   frontend:
     build: ./frontend
-    image: rreddygang/frontend:1.0.0
+    image: rreddygang/frontend:1.1.0
     container_name: frontend
     ports:
       - "80:80"
@@ -63,7 +63,7 @@ services:
 
   mongodb:
     build: ./mongodb
-    image: rreddygang/mongodb:1.0.0
+    image: rreddygang/mongodb:1.1.0
     container_name: mongodb
     volumes:
       - mongodb:/data/db
@@ -76,7 +76,7 @@ services:
 
   mysql:
     build: ./mysql
-    image: rreddygang/mysql:1.0.0
+    image: rreddygang/mysql:1.1.0
     container_name: mysql
     volumes:
       - mysql:/var/lib/mysql
