@@ -1,8 +1,29 @@
-FROM python:3.9
-EXPOSE 8080
+# FROM python:3.9
+# EXPOSE 8080
+# WORKDIR /app
+# COPY payment.ini .
+# COPY *.py .
+# COPY requirements.txt .
+# RUN pip3 install -r requirements.txt
+# CMD ["uwsgi","--ini","payment.ini"]
+
+FROM python:3.9-slim AS builder
+
 WORKDIR /app
-COPY payment.ini .
-COPY *.py .
+
 COPY requirements.txt .
-RUN pip3 install -r requirements.txt
-CMD ["uwsgi","--ini","payment.ini"]
+RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
+
+COPY payment.ini .
+COPY *.py ./
+
+FROM python:3.9-slim
+
+WORKDIR /app
+
+COPY --from=builder /install /usr/local
+COPY --from=builder /app /app
+
+EXPOSE 8080
+
+CMD ["uwsgi", "--ini", "payment.ini"]

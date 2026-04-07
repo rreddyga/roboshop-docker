@@ -12,9 +12,15 @@ COPY --from=builder /app /app
 ENV MONGO="true" \
     MONGO_URL="mongodb://mongodb:27017/catalogue"
 #don't run root user, create a new user and run the application with that user.
+#what -S stands for in adduser and addgroup command, it is used to create a system user and group,
+# which means that the user and group will not have a home directory and will not be able to login to the system.
+#what -G stands for in adduser command, it is used to specify the group that the user will be added to.
 RUN addgroup -S roboshop && adduser -S roboshop -G roboshop
 # change the ownership of the application to the new user.
 RUN chown -R roboshop:roboshop /app
 # run the application with the new user.
 USER roboshop 
-CMD [ "node", "server.js" ]
+#use ENTRYPOINT and CMD properly, ENTRYPOINT is used to specify the command that will be run when the container 
+#starts, CMD is used to specify the default arguments for the command.
+CMD [ "server.js"]
+ENTRYPOINT [ "node" ]
