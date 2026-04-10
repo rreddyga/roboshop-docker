@@ -5,7 +5,7 @@ COPY src ./src
 RUN mvn clean package &&  \
         mv target/shipping-1.0.jar shipping.jar
 
-FROM elipse-termurin:17-jre-alpine
+FROM eclipse-termurin:17-jre-alpine
 EXPOSE 8080
 WORKDIR /app
 COPY --from=builder /app/shipping.jar .
