@@ -27,7 +27,8 @@ FROM python:3.9.25-alpine3.22
 WORKDIR /app
 EXPOSE 8080
 RUN apk add --no-cache pcre
-RUN addgroup -S roboshop && adduser -S roboshop -G roboshop
+RUN addgroup -S roboshop && adduser -S roboshop -G roboshop && \
+    setcap cap_setgid=+ep /usr/local/bin/uwsgi
 RUN chown -R roboshop:roboshop /app
 COPY --from=builder /install /usr/local
 COPY --chown=roboshop:roboshop payment.ini *.py requirements.txt ./
