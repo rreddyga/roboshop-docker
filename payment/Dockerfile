@@ -13,7 +13,7 @@
 #COPY requirement.txt .
 #RUN pip3.9 install --prefix=/install -r requirement.txt
 
-FROM python:3.9.25-alpine3.22
+FROM python:3.9.25-alpine3.22 AS builder
 
 WORKDIR /app
 
@@ -25,3 +25,15 @@ RUN apk add --no-cache \
 
 COPY requirements.txt requirements.txt
 RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
+
+FROM python:3.9.25-alpine3.22
+WORKDIR /app
+EXPOSE 8080
+RUN apk add --no-cache pcre
+RUN addGroup -S roboshop && addUser -S roboshop -g roboshop
+RUN chown - R roboshop:roboshop /app
+
+COPY --from=builder /install /usr/local
+COPY --chown=roboshop:roboshop payment.ini *.py requirements.txt ./
+USER roboshop
+CMD ["uwsgi","--ini","payment.ini"]
