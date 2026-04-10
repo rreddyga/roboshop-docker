@@ -23,5 +23,5 @@ RUN apk add --no-cache \
     python3-dev \
     pcre-dev
 
-COPY requirements.txt .
+COPY requirements.txt requirements.txt
 RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
