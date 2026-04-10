@@ -24,3 +24,8 @@ USER roboshop
 #starts, CMD is used to specify the default arguments for the command.
 CMD [ "server.js"]
 ENTRYPOINT [ "node" ]
+
+#docker build -t catalogue:1.4.0 .
+#push the image to docker hub, first login to docker hub using the command docker login,
+#then tag the image with the command -> docker tag catalogue:1.4.0 rreddygang/catalogue:1.4.0
+#then push the image to docker hub with the command -> docker push rreddygang/catalogue:1.4.0
