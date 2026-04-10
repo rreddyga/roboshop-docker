@@ -14,25 +14,21 @@
 #RUN pip3.9 install --prefix=/install -r requirement.txt
 
 FROM python:3.9.25-alpine3.22 AS builder
-
 WORKDIR /app
-
 RUN apk add --no-cache \
     build-base \
     linux-headers \
     python3-dev \
     pcre-dev
-
-COPY requirements.txt requirements.txt
+COPY requirements.txt .
 RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
 
 FROM python:3.9.25-alpine3.22
 WORKDIR /app
 EXPOSE 8080
 RUN apk add --no-cache pcre
-RUN addGroup -S roboshop && addUser -S roboshop -G roboshop
-RUN chown - R roboshop:roboshop /app
-
+RUN addgroup -S roboshop && adduser -S roboshop -G roboshop
+RUN chown -R roboshop:roboshop /app
 COPY --from=builder /install /usr/local
 COPY --chown=roboshop:roboshop payment.ini *.py requirements.txt ./
 USER roboshop
