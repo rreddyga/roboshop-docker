@@ -20,9 +20,11 @@ RUN npm install
 FROM node:20.20.2-alpine
 WORKDIR /app
 COPY --from=builder /app /app
-ENV MONGO="true" \
-    MONGO_URL="mongodb://mongodb:27017/catalogue" \
-    REDIS_URL="redis://redis:6379"
+#these environment variables we will rewrite in the k8s configmap, 
+#so that we can use the container runtime environment variables
+#ENV MONGO="true" \
+#    MONGO_URL="mongodb://mongodb:27017/catalogue" \
+#    REDIS_URL="redis://redis:6379"
 #don't run root user, create a new user and run the application with that user.
 #what -S stands for in adduser and addgroup command, it is used to create a system user and group,
 # which means that the user and group will not have a home directory and will not be able to login to the system.
