@@ -1,29 +1,18 @@
-# FROM maven:3.9.14
-# Expose 8080
-# WORKDIR /app
-# COPY pom.xml .
-# COPY src ./src
-# RUN mvn clean package
-# RUN mv target/shipping-1.0.jar shipping.jar
-# ENV CART_ENDPOINT="cart:8080" \
-#     DB_HOST="mysql"
-# CMD ["java", "-jar", "shipping.jar"]
+FROM maven:3.9.14 as builder
 
-# Stage 1: Build (Maven)
-FROM maven:3.9.14-eclipse-temurin-21-alpine AS builder
 WORKDIR /app
 COPY pom.xml .
-RUN mvn dependency:go-offline -B
 COPY src ./src
-RUN mvn clean package -DskipTests
+RUN mvn clean package &&  \
+        mv target/shipping-1.0.jar shipping.jar
 
-# Stage 2: Run (Minimalistic JRE only)
-FROM eclipse-temurin:21-jre-alpine
-WORKDIR /app
-COPY --from=builder /app/target/shipping-1.0.jar shipping.jar
-
-ENV CART_ENDPOINT="cart:8080" \
-    DB_HOST="mysql"
-
+FROM elipse-termurin:17-jre-alpine
 EXPOSE 8080
+WORKDIR /app
+COPY --from=builder /app/shipping.jar .
+RUN addgroup -S roboshop && adduser -S roboshop -G roboshop
+# change the ownership of the application to the new user.
+RUN chown -R roboshop:roboshop /app
+USER roboshop
 CMD ["java", "-jar", "shipping.jar"]
+#ENVIROMENT WE ARE HANDLING IN THE K8S CONFIGMAP, SO WE ARE NOT DEFINING ENVIRONMENT VARIABLES IN THE DOCKERFILE.
