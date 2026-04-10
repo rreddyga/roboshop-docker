@@ -30,7 +30,7 @@ FROM python:3.9.25-alpine3.22
 WORKDIR /app
 EXPOSE 8080
 RUN apk add --no-cache pcre
-RUN addGroup -S roboshop && addUser -S roboshop -g roboshop
+RUN addGroup -S roboshop && addUser -S roboshop -G roboshop
 RUN chown - R roboshop:roboshop /app
 
 COPY --from=builder /install /usr/local
